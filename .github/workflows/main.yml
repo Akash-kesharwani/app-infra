@@ -41,9 +41,20 @@ jobs:
       run: terraform plan -no-color -input=false
       working-directory: terra-infra
       continue-on-error: true
-  terraform-apply:
+      
+  terraform-scanning:
     runs-on: self-hosted
     needs: terraform-init-plan
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+      
+    - name: tfsec
+      uses: aquasecurity/tfsec-action@v1.0.0
+      
+  terraform-apply:
+    runs-on: self-hosted
+    needs: terraform-scanning
     steps:
     - name: Checkout
       uses: actions/checkout@v5.0.0
@@ -62,7 +73,7 @@ jobs:
       
     - name: Terraform Apply
       id: apply
-      working-directory: environment/stage
+      working-directory: terra-infra
       run: terraform apply --auto-approve
       continue-on-error: true 
                
