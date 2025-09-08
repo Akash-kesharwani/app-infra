@@ -1,0 +1,90 @@
+name: workflow for app-infrastructure
+
+on: workflow_dispatch
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform-init-plan:
+    runs-on: self-hosted
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5.0.0
+      
+    - name: Azure Login
+      uses: Azure/login@v2.3.0
+      with:
+        client-id: eea770a2-17d2-4067-8827-0ebedcf85029
+        tenant-id: a6395b74-f5d3-427b-b4c0-5a918ab2e374
+        subscription-id: 388a2121-d962-4059-8c36-c24d806cad40
+
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt -check
+      working-directory: terra-infra
+      continue-on-error: true
+    
+    - name: Terraform Init
+      id: init
+      working-directory: terra-infra
+      run: terraform init -input=false
+    
+    - name: Terraform Validate
+      id: validate
+      working-directory: terra-infra
+      run: terraform validate -no-color 
+
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color -input=false
+      working-directory: terra-infra
+      continue-on-error: true
+      
+  terraform-scanning:
+    runs-on: self-hosted
+    needs: terraform-init-plan
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+      
+    - name: Run tfsec
+      run: |
+        tfsec . --soft-fail
+      
+  terraform-apply:
+    runs-on: self-hosted
+    needs: terraform-scanning
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5.0.0
+      
+    - name: Azure Login
+      uses: Azure/login@v2.3.0
+      with:
+        client-id: eea770a2-17d2-4067-8827-0ebedcf85029
+        tenant-id: a6395b74-f5d3-427b-b4c0-5a918ab2e374
+        subscription-id: 388a2121-d962-4059-8c36-c24d806cad40
+
+    - name: Terraform Init
+      id: init
+      working-directory: terra-infra
+      run: terraform init -input=false
+      
+    - name: Terraform Apply
+      id: apply
+      working-directory: terra-infra
+      run: terraform apply --auto-approve
+      continue-on-error: true 
+               
+        
+      
+    
+  
+ 
+
+          
+      
+    
+  
