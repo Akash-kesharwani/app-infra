@@ -5,7 +5,7 @@ data "azurerm_network_interface" "nic-data" {
 
 data "azurerm_key_vault" "key-vault" {
   name                = "key1-test"
-  resource_group_name = var.rg-name
+  resource_group_name = "rg-test"
 }
 
 data "azurerm_key_vault_secret" "username" {

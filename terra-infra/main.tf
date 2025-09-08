@@ -101,6 +101,7 @@ module "lb" {
   pool-name    = "pool-aks"
   lb-rule-name = "pool-rule-aks"
   probe-name   = "probe-aks"
+  pip-name   = "pip-aks"
 }
 module "nsg-nic1" {
   depends_on = [ module.rg, module.nic1 ]
