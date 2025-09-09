@@ -87,7 +87,7 @@ module "nic1-pool-association" {
   lb-name         = "lb-aks"
   rg-name         = "rg-aks"
   pool-name       = "pool-aks"
-  nic-name        = "nic1-name"
+  nic-name        = "nic1-aks"
   nic_config_name = "internal"
 }
 
@@ -125,7 +125,7 @@ module "nic2-pool-association" {
   lb-name         = "lb-aks"
   rg-name         = "rg-aks"
   pool-name       = "pool-aks"
-  nic-name        = "nic2-name"
+  nic-name        = "nic2-aks"
   nic_config_name = "internal"
 }
  
