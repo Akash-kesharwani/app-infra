@@ -137,15 +137,6 @@ module "subnet-bastion" {
   address_prefixes = ["10.0.2.0/24"]
 }
 
-module "bas-pip" {
-  depends_on = [ module.rg ]
-  source = "../modules/azurerm_bastion_pip"
-  bas-pip-name = "bas-pip"
-  rg-name = "rg-aks"
-  location = "japan east"
-
-}
-
 module "bastion" {
   depends_on = [ module.subnet-bastion, module.bas-pip ]
   source = "../modules/azurerm_bastion"
