@@ -138,7 +138,7 @@ module "subnet-bastion" {
 }
 
 module "bastion" {
-  depends_on = [ module.subnet-bastion, module.bas-pip ]
+  depends_on = [ module.subnet-bastion ]
   source = "../modules/azurerm_bastion"
   rg-name = "rg-aks"
   location = "japan east"
