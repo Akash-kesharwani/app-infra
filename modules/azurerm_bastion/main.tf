@@ -5,7 +5,7 @@ resource "azurerm_bastion_host" "bastion" {
 
   ip_configuration {
     name                 = "configuration"
-    subnet_id            = data.azurerm_subnet.subnet-data.id
-    public_ip_address_id = data.azurerm_public_ip.pip-data.id
+    subnet_id            = data.azurerm_subnet.bas-subnet-data.id
+    public_ip_address_id = data.azurerm_public_ip.bas-pip-data.id
   }
 }
