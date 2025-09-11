@@ -138,6 +138,7 @@ module "subnet-bastion" {
 }
 
 module "bas-pip" {
+  depends_on = [ module.rg ]
   source = "../modules/azurerm_bastion_pip"
   bas-pip-name = "bas-pip"
   rg-name = "rg-aks"
